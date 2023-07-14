@@ -1,5 +1,5 @@
 package com.controller.repository.service
-import com.model.Cadastros
+import com.model.Cadastro
 import com.controller.repository.ConexaoDatabase
 import java.sql.SQLException
 
@@ -8,7 +8,7 @@ object CadastrosService {
 
     // Inserir Usuario (INSERT)
     @JvmStatic
-    fun inserirCadastro(cadastro: Cadastros) {
+    fun inserirCadastro(cadastro: Cadastro) {
         try {
             val conn = conexao.conexao
             val sql = "INSERT INTO cadastros (id_usuario, nome, cpf, endereco, telefone) " +

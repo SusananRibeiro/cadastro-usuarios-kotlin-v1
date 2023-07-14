@@ -1,6 +1,6 @@
 package com.model
 
-class Cadastros {
+class Cadastro {
     var id: Int = 0
     var idUsuario: String? = null
     var nome: String? = null

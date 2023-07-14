@@ -1,6 +1,6 @@
 package com.controller
 
-import com.model.Cadastros
+import com.model.Cadastro
 import com.controller.repository.service.CadastrosService
 import javafx.fxml.FXML
 import javafx.scene.control.Alert
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component
 
 @Component
 @FxmlView("/cadastro.fxml") // para lincar com o arquivo "cadastro.fxml"
-class CadastrosController {
+class CadastroController {
     @FXML
     private lateinit var idUsuarios: TextField
     @FXML
@@ -23,7 +23,7 @@ class CadastrosController {
     private lateinit var telefone: TextField
 
     fun executarSalvar() {
-        val cadastro: Cadastros = Cadastros()
+        val cadastro: Cadastro = Cadastro()
         cadastro.idUsuario = idUsuarios.text
         cadastro.nome = nome.text
         cadastro.cpf = cpf.text
