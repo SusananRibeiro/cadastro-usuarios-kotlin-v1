@@ -1,15 +1,11 @@
 package com.controller
-
 import com.controller.repository.ConexaoDatabase
 import com.model.Cadastro
 import javafx.fxml.FXML
 import javafx.scene.control.Alert
 import javafx.scene.control.TextField
 import net.rgielen.fxweaver.core.FxmlView
-import org.springframework.stereotype.Component
 import java.sql.SQLException
-
-@Component
 @FxmlView("/cadastro.fxml") // para lincar com o arquivo "cadastro.fxml"
 class CadastroController {
     @FXML

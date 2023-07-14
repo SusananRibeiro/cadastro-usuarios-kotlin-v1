@@ -6,13 +6,9 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.control.Alert
 import javafx.scene.control.TextField
-import javafx.scene.input.MouseEvent
 import javafx.stage.Stage
 import net.rgielen.fxweaver.core.FxmlView
-import org.springframework.stereotype.Component
 import java.sql.SQLException
-
-@Component
 @FxmlView("/main.fxml")
 class UsuarioController {
     @FXML
