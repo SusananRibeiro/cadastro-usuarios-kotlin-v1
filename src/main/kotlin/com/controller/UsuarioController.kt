@@ -2,8 +2,12 @@ package com.controller
 import com.controller.repository.ConexaoDatabase
 import com.model.Usuario
 import javafx.fxml.FXML
+import javafx.fxml.FXMLLoader
+import javafx.scene.Scene
 import javafx.scene.control.Alert
 import javafx.scene.control.TextField
+import javafx.scene.input.MouseEvent
+import javafx.stage.Stage
 import net.rgielen.fxweaver.core.FxmlView
 import org.springframework.stereotype.Component
 import java.sql.SQLException
@@ -30,23 +34,23 @@ class UsuarioController {
             // Colocar na classe controller para não aceitar letras no campo documento
             if (nomeUsuario.text.isEmpty()) {
                 alertaObrig.headerText = "É obrigatório informar o usuário!"
-                alertaObrig.show() // precisa para mostrar a tela do alerta
+                alertaObrig.show()
             } else if (senha.text.isEmpty()) {
                 alertaObrig.headerText = "É obrigatório informar a senha!"
-                alertaObrig.show() // precisa para mostrar a tela do alerta
-            } else if (buscarUsuarioByUsuario(user.nomeUsuario!!)) { // "!!" não nulo ou usar o "Elvis ?: nulo"
-                    val alert = Alert(Alert.AlertType.ERROR)
-                    alert.title = "Alerta"
-                    alert.headerText = "Usuário " + nomeUsuario.text + " já existe."
-                    alert.show() // precisa para mostrar a tela do alerta
-                } else {
-                    inserirUsuario(user)
-                }
+                alertaObrig.show()
+            } else if (buscarNomeUsuarioPorUsuario(user.nomeUsuario!!)) { // "!!" não nulo ou usar o "Elvis ?: nulo"
+                val alert = Alert(Alert.AlertType.ERROR)
+                alert.title = "Alerta"
+                alert.headerText = "Usuário " + nomeUsuario.text + " já existe."
+                alert.show() // precisa para mostrar a tela do alerta
+            } else {
+                inserirUsuario(user)
+            }
         } catch (e: NumberFormatException) {
             e.printStackTrace()
         }
         limparCamposUsuario()
-
+        abrirTelaDeCadastro()
     }
 
     // Inserir Usuario (INSERT)
@@ -64,8 +68,8 @@ class UsuarioController {
         }
     }
 
-    // Validar o documento único
-    fun buscarUsuarioByUsuario(usuario: String): Boolean {
+    // Validar nome de usuário único
+    fun buscarNomeUsuarioPorUsuario (usuario: String): Boolean {
         try {
             val conn = conexao.conexao
             val selectSql = "SELECT id FROM usuarios WHERE usuario = '$usuario'" // precisa colocar entre aspas simples
@@ -82,5 +86,15 @@ class UsuarioController {
     fun limparCamposUsuario() {
         nomeUsuario.text = "" // zera o campo
         senha.text = ""
+    }
+
+    fun abrirTelaDeCadastro() {
+        val fxmlLoader = FXMLLoader()
+        fxmlLoader.location = javaClass.getResource("/cadastro.fxml")
+        val scene = Scene(fxmlLoader.load())
+        val stage = Stage()
+        stage.title = "Alterar"
+        stage.scene = scene
+        stage.show()
     }
 }
