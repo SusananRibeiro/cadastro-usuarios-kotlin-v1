@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="477.0" prefWidth="268.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controller.CadastrosController">
+   <children>
+      <AnchorPane prefHeight="481.0" prefWidth="268.0">
+         <children>
+            <Label layoutX="24.0" layoutY="67.0" text="Código *" />
+            <TextField fx:id="idUsuario" layoutX="25.0" layoutY="84.0" prefHeight="25.0" prefWidth="184.0" />
+            <Label layoutX="27.0" layoutY="116.0" text="Nome *" />
+            <TextField fx:id="nome" layoutX="25.0" layoutY="140.0" prefHeight="25.0" prefWidth="184.0" />
+            <Label layoutX="25.0" layoutY="175.0" text="CPF *" />
+            <TextField fx:id="cpf" layoutX="27.0" layoutY="192.0" prefHeight="25.0" prefWidth="184.0" />
+            <Label layoutX="29.0" layoutY="230.0" text="Endereco" />
+            <TextField fx:id="endereco" layoutX="27.0" layoutY="247.0" prefHeight="25.0" prefWidth="184.0" />
+            <Label layoutX="31.0" layoutY="280.0" text="Telefone" />
+            <TextField fx:id="telefone" layoutX="29.0" layoutY="306.0" />
+            <Button fx:id="cadastrar" layoutX="95.0" layoutY="417.0" mnemonicParsing="false" onAction="#executarSalvar" text="Salvar" />
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>
