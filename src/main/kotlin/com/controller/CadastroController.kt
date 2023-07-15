@@ -22,9 +22,9 @@ class CadastroController {
     @FXML
     private lateinit var mensagemIdUsuario: Label
     @FXML
-    private lateinit var mensagemNomeCadastro: Label
+    private lateinit var mensagemNome: Label
     @FXML
-    private lateinit var mensagemCpfCadastro: Label
+    private lateinit var mensagemCpf: Label
 
     private val conexao = ConexaoDatabase()
 
@@ -42,13 +42,12 @@ class CadastroController {
             } else if (buscarIdUsuarioPorCadastro(cadastro.idUsuario!!)) {
                 mensagemIdUsuario.text = "Código do usuário " + idUsuario.text + " já existe."
             } else if (nome.text.isEmpty()) {
-                mensagemNomeCadastro.text = "É obrigatório informar o nome!"
+                mensagemNome.text = "É obrigatório informar o nome!"
             } else if (cpf.text.isEmpty()) {
-                mensagemCpfCadastro.text = "É obrigatório informar o CPF!"
+                mensagemCpf.text = "É obrigatório informar o CPF!"
             } else {
                 inserirCadastro(cadastro)
                 limparMensagens()
-
                 limparCamposUsuario()
             }
 
@@ -86,11 +85,9 @@ class CadastroController {
 
     private fun limparMensagens() {
         mensagemIdUsuario.text = ""
-        mensagemNomeCadastro.text = ""
-        mensagemCpfCadastro.text = ""
+        mensagemNome.text = ""
+        mensagemCpf.text = ""
     }
-
-
     // Validar código do usuário único
     private fun buscarIdUsuarioPorCadastro(idUsuario: String): Boolean {
         try {
