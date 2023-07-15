@@ -3,10 +3,11 @@ import com.controller.repository.ConexaoDatabase
 import com.model.Cadastro
 import javafx.fxml.FXML
 import javafx.scene.control.Alert
+import javafx.scene.control.Label
 import javafx.scene.control.TextField
-import net.rgielen.fxweaver.core.FxmlView
+import java.sql.ResultSet
 import java.sql.SQLException
-@FxmlView("/cadastro.fxml") // para lincar com o arquivo "cadastro.fxml"
+// @FxmlView("/cadastro.fxml") // para lincar com o arquivo "cadastro.fxml"
 class CadastroController {
     @FXML
     private lateinit var idUsuario: TextField
@@ -18,6 +19,12 @@ class CadastroController {
     private lateinit var endereco: TextField
     @FXML
     private lateinit var telefone: TextField
+    @FXML
+    private lateinit var mensagemIdUsuario: Label
+    @FXML
+    private lateinit var mensagemNomeCadastro: Label
+    @FXML
+    private lateinit var mensagemCpfCadastro: Label
 
     private val conexao = ConexaoDatabase()
 
@@ -30,36 +37,29 @@ class CadastroController {
         cadastro.telefone = telefone.text
 
         try {
-            val alertaObrig = Alert(Alert.AlertType.ERROR)
-            alertaObrig.title = "Campo obrigatório"
-            val alertaInval = Alert(Alert.AlertType.ERROR)
-            alertaInval.title = "Erro"
             if(idUsuario.text.isEmpty()) {
-                alertaObrig.headerText = "É obrigatório informar o código do usuário!"
-                alertaObrig.show() // precisa para mostrar a tela do alerta
+                mensagemIdUsuario.text = "É obrigatório informar o código do usuário!"
             } else if (buscarIdUsuarioPorCadastro(cadastro.idUsuario!!)) {
-                val alert = Alert(Alert.AlertType.ERROR)
-                alert.title = "Alerta"
-                alert.headerText = "Código do usuário " + idUsuario.text + " já existe."
-                alert.show() // precisa para mostrar a tela do alerta
+                mensagemIdUsuario.text = "Código do usuário " + idUsuario.text + " já existe."
             } else if (nome.text.isEmpty()) {
-                    alertaObrig.headerText = "É obrigatório informar o nome!"
-                    alertaObrig.show() // precisa para mostrar a tela do alerta
-                } else if (cpf.text.isEmpty()) {
-                    alertaObrig.headerText = "É obrigatório informar o CPF!"
-                    alertaObrig.show()
-                } else {
-                    inserirCadastro(cadastro)
-                }
+                mensagemNomeCadastro.text = "É obrigatório informar o nome!"
+            } else if (cpf.text.isEmpty()) {
+                mensagemCpfCadastro.text = "É obrigatório informar o CPF!"
+            } else {
+                inserirCadastro(cadastro)
+                limparMensagens()
+
+                limparCamposUsuario()
+            }
 
         } catch (e: NumberFormatException) {
             e.printStackTrace()
         }
-        this.limparCamposUsuario()
+        limparCamposUsuario()
 
     }
     // Inserir Usuario (INSERT)
-    fun inserirCadastro(cadastro: Cadastro) {
+    private fun inserirCadastro(cadastro: Cadastro) {
         try {
             val conn = conexao.conexao
             val sql = "INSERT INTO cadastros (id_usuario, nome, cpf, endereco, telefone) " +
@@ -76,7 +76,7 @@ class CadastroController {
             throw RuntimeException(e)
         }
     }
-    fun limparCamposUsuario() {
+    private fun limparCamposUsuario() {
         idUsuario.text = "" // zera o campo
         nome.text = ""
         cpf.text = ""
@@ -84,8 +84,15 @@ class CadastroController {
         telefone.text = ""
     }
 
+    private fun limparMensagens() {
+        mensagemIdUsuario.text = ""
+        mensagemNomeCadastro.text = ""
+        mensagemCpfCadastro.text = ""
+    }
+
+
     // Validar código do usuário único
-    fun buscarIdUsuarioPorCadastro(idUsuario: String): Boolean {
+    private fun buscarIdUsuarioPorCadastro(idUsuario: String): Boolean {
         try {
             val conn = conexao.conexao
             val selectSql = "SELECT id FROM cadastros WHERE id_usuario = '$idUsuario'"
@@ -99,4 +106,5 @@ class CadastroController {
         }
         return false
     }
+
 }
