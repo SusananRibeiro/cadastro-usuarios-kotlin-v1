@@ -29,3 +29,7 @@ class JavaFxApplication : Application() {
         stage.show() // Exibição da janela
     }
 }
+
+fun main(args: Array<String>) {
+    Application.launch(JavaFxApplication::class.java, *args)
+}

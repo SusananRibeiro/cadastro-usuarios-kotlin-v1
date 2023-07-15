@@ -1,7 +1,7 @@
 package com.model
 
 class Usuario {
-    var id: Int = 0
+
     var nomeUsuario: String? = null
     var senha: String? = null
 

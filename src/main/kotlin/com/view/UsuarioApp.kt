@@ -1,6 +1,5 @@
 package com.view
 import javafx.application.Application
-
 object UsuarioApp {
     @JvmStatic
     fun main(args: Array<String>) {
