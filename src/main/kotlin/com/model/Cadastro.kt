@@ -9,11 +9,4 @@ class Cadastro {
 
     constructor()
 
-    constructor(idUsuario: String?, nome: String?, cpf: String?, endereco: String?, telefone: String?) {
-        this.idUsuario = idUsuario
-        this.nome = nome
-        this.cpf = cpf
-        this.endereco = endereco
-        this.telefone = telefone
-    }
 }

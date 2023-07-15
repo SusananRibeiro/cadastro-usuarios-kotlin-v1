@@ -5,54 +5,50 @@ import javafx.fxml.FXML
 import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.control.Alert
+import javafx.scene.control.Label
 import javafx.scene.control.TextField
 import javafx.stage.Stage
-import net.rgielen.fxweaver.core.FxmlView
 import java.sql.SQLException
 import java.sql.Statement
 
-@FxmlView("/main.fxml")
 class UsuarioController {
     @FXML
     private lateinit var nomeUsuario: TextField
     @FXML
     private lateinit var senha: TextField
+    @FXML
+    private lateinit var mensagem: Label
+    @FXML
+    private lateinit var mensagemSenha: Label
 
     private val conexao = ConexaoDatabase()
 
-    fun executarCadastarUsuario() {
+    fun executarLoginUsuario() {
         val user: Usuario = Usuario()
         user.nomeUsuario = nomeUsuario.text
         user.senha = senha.text
         try {
-            val alertaObrig = Alert(Alert.AlertType.ERROR)
-            alertaObrig.title = "Campo obrigatório"
-            val alertaInval = Alert(Alert.AlertType.ERROR)
-            alertaInval.title = "Erro"
-            // Colocar na classe controller para não aceitar letras no campo documento
             if (nomeUsuario.text.isEmpty()) {
-                alertaObrig.headerText = "É obrigatório informar o usuário!"
-                alertaObrig.show()
+                mensagem.text = "É obrigatório informar o usuário!"
             } else if (senha.text.isEmpty()) {
-                alertaObrig.headerText = "É obrigatório informar a senha!"
-                alertaObrig.show()
+                mensagemSenha.text = "É obrigatório informar a senha!"
             } else if (buscarNomeUsuarioPorUsuario(user.nomeUsuario!!)) { // "!!" não nulo ou usar o "Elvis ?: nulo"
-                val alert = Alert(Alert.AlertType.ERROR)
-                alert.title = "Alerta"
-                alert.headerText = "Usuário " + nomeUsuario.text + " já existe."
-                alert.show() // precisa para mostrar a tela do alerta
+                mensagem.text = "Usuário " + nomeUsuario.text + " já existe."
+
             } else {
                 inserirUsuario(user)
+                limparMensagens()
                 abrirTelaDeCadastro()
             }
         } catch (e: NumberFormatException) {
             e.printStackTrace()
         }
         limparCamposUsuario()
+
     }
 
     // Inserir Usuario (INSERT)
-    fun inserirUsuario(usuario: Usuario) {
+    private fun inserirUsuario(usuario: Usuario) {
         try {
             val conn = conexao.conexao
             val sql = "INSERT INTO usuarios (usuario, senha) VALUES ( ?, ?)"
@@ -85,26 +81,19 @@ class UsuarioController {
         nomeUsuario.text = "" // zera o campo
         senha.text = ""
     }
+    private fun limparMensagens() {
+        mensagem.text = ""
+        mensagemSenha.text = ""
+    }
 
     private fun abrirTelaDeCadastro() {
         val carregarFxml = FXMLLoader()
         carregarFxml.location = javaClass.getResource("/cadastro.fxml")
         val cena = Scene(carregarFxml.load())
-        val stage = Stage()
-        stage.title = "Alterar Cadastro"
-        stage.scene = cena
-        stage.show()
+        val estagio = Stage()
+        estagio.title = "Dados do Cadastro"
+        estagio.scene = cena
+        estagio.show()
     }
 
-    /*
-    // Executar a inserção de dados
-       statement.executeUpdate("INSERT INTO exemplo (nome) VALUES ('Exemplo')", Statement.RETURN_GENERATED_KEYS)
-
-        // Obter o ID gerado automaticamente
-        val resultSet: ResultSet = statement.generatedKeys
-        if (resultSet.next()) {
-            val id: Int = resultSet.getInt(1)
-            println("ID gerado: $id")
-        }
-     */
 }

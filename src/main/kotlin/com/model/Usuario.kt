@@ -7,8 +7,4 @@ class Usuario {
 
     constructor()
 
-    constructor(nomeUsuario: String?, senha: String?) {
-        this.nomeUsuario = nomeUsuario
-        this.senha = senha
-    }
 }
