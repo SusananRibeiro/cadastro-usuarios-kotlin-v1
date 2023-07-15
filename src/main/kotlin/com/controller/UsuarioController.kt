@@ -6,13 +6,11 @@ import javafx.fxml.FXMLLoader
 import javafx.scene.Scene
 import javafx.scene.control.Alert
 import javafx.scene.control.TextField
-import javafx.scene.input.MouseEvent
 import javafx.stage.Stage
 import net.rgielen.fxweaver.core.FxmlView
-import org.springframework.stereotype.Component
 import java.sql.SQLException
+import java.sql.Statement
 
-@Component
 @FxmlView("/main.fxml")
 class UsuarioController {
     @FXML
@@ -45,12 +43,12 @@ class UsuarioController {
                 alert.show() // precisa para mostrar a tela do alerta
             } else {
                 inserirUsuario(user)
+                abrirTelaDeCadastro()
             }
         } catch (e: NumberFormatException) {
             e.printStackTrace()
         }
         limparCamposUsuario()
-        abrirTelaDeCadastro()
     }
 
     // Inserir Usuario (INSERT)
@@ -69,12 +67,12 @@ class UsuarioController {
     }
 
     // Validar nome de usuário único
-    fun buscarNomeUsuarioPorUsuario (usuario: String): Boolean {
+    private fun buscarNomeUsuarioPorUsuario (usuario: String): Boolean {
         try {
-            val conn = conexao.conexao
+            val connection = conexao.conexao
             val selectSql = "SELECT id FROM usuarios WHERE usuario = '$usuario'" // precisa colocar entre aspas simples
-            val sta = conn?.createStatement()
-            val resultSet = sta?.executeQuery(selectSql)
+            val statement: Statement? = connection?.createStatement() // Criar uma declaração SQL para a inserção de dados
+            val resultSet = statement?.executeQuery(selectSql)
             if (resultSet != null) {
                 return resultSet.next()
             }
@@ -83,18 +81,30 @@ class UsuarioController {
         }
         return false
     }
-    fun limparCamposUsuario() {
+    private fun limparCamposUsuario() {
         nomeUsuario.text = "" // zera o campo
         senha.text = ""
     }
 
-    fun abrirTelaDeCadastro() {
-        val fxmlLoader = FXMLLoader()
-        fxmlLoader.location = javaClass.getResource("/cadastro.fxml")
-        val scene = Scene(fxmlLoader.load())
+    private fun abrirTelaDeCadastro() {
+        val carregarFxml = FXMLLoader()
+        carregarFxml.location = javaClass.getResource("/cadastro.fxml")
+        val cena = Scene(carregarFxml.load())
         val stage = Stage()
-        stage.title = "Alterar"
-        stage.scene = scene
+        stage.title = "Alterar Cadastro"
+        stage.scene = cena
         stage.show()
     }
+
+    /*
+    // Executar a inserção de dados
+       statement.executeUpdate("INSERT INTO exemplo (nome) VALUES ('Exemplo')", Statement.RETURN_GENERATED_KEYS)
+
+        // Obter o ID gerado automaticamente
+        val resultSet: ResultSet = statement.generatedKeys
+        if (resultSet.next()) {
+            val id: Int = resultSet.getInt(1)
+            println("ID gerado: $id")
+        }
+     */
 }
