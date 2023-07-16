@@ -10,7 +10,7 @@ class JavaFxApplication : Application() {
     @Throws(Exception::class)
     override fun start(estagio: Stage) {
         val carregarFxml = FXMLLoader()
-        val urlFxml = javaClass.getResource("/main.fxml")
+        val urlFxml = javaClass.getResource("/usuario.fxml")
         carregarFxml.location = urlFxml
 
         val cena = Scene(carregarFxml.load()) // Carregando o layout definido no arquivo FXML
