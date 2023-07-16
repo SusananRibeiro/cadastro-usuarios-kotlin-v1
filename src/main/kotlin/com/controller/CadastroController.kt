@@ -2,10 +2,8 @@ package com.controller
 import com.controller.repository.ConexaoDatabase
 import com.model.Cadastro
 import javafx.fxml.FXML
-import javafx.scene.control.Alert
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
-import java.sql.ResultSet
 import java.sql.SQLException
 // @FxmlView("/cadastro.fxml") // para lincar com o arquivo "cadastro.fxml"
 class CadastroController {
@@ -29,8 +27,7 @@ class CadastroController {
     private val conexao = ConexaoDatabase()
 
     fun executarSalvar() {
-        val cadastro: Cadastro = Cadastro()
-        cadastro.idUsuario = idUsuario.text
+        val cadastro = Cadastro()
         cadastro.nome = nome.text
         cadastro.cpf = cpf.text
         cadastro.endereco = endereco.text
@@ -57,13 +54,12 @@ class CadastroController {
         limparCamposUsuario()
 
     }
-    // Inserir Usuario (INSERT)
+    // Inserir (INSERT)
     private fun inserirCadastro(cadastro: Cadastro) {
         try {
-            val conn = conexao.conexao
             val sql = "INSERT INTO cadastros (id_usuario, nome, cpf, endereco, telefone) " +
                     "VALUES ( ?, ?, ?, ?, ?)"
-            val pre = conn?.prepareStatement(sql)
+            val pre = conexao.conexaoDoDatabase?.prepareStatement(sql)
             pre?.setInt(1, cadastro.idUsuario!!.toInt())
             pre?.setString(2, cadastro.nome)
             pre?.setString(3, cadastro.cpf)
@@ -75,23 +71,11 @@ class CadastroController {
             throw RuntimeException(e)
         }
     }
-    private fun limparCamposUsuario() {
-        idUsuario.text = "" // zera o campo
-        nome.text = ""
-        cpf.text = ""
-        endereco.text = ""
-        telefone.text = ""
-    }
 
-    private fun limparMensagens() {
-        mensagemIdUsuario.text = ""
-        mensagemNome.text = ""
-        mensagemCpf.text = ""
-    }
     // Validar código do usuário único
     private fun buscarIdUsuarioPorCadastro(idUsuario: String): Boolean {
         try {
-            val conn = conexao.conexao
+            val conn = conexao.conexaoDoDatabase
             val selectSql = "SELECT id FROM cadastros WHERE id_usuario = '$idUsuario'"
             val sta = conn?.createStatement()
             val resultSet = sta?.executeQuery(selectSql)
@@ -102,6 +86,18 @@ class CadastroController {
             e.printStackTrace()
         }
         return false
+    }
+    private fun limparCamposUsuario() {
+        idUsuario.text = "" // zera o campo
+        nome.text = ""
+        cpf.text = ""
+        endereco.text = ""
+        telefone.text = ""
+    }
+    private fun limparMensagens() {
+        mensagemIdUsuario.text = ""
+        mensagemNome.text = ""
+        mensagemCpf.text = ""
     }
 
 }

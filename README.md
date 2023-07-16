@@ -1,9 +1,9 @@
 # Aplicação de cadastro de usuário
 
-A aplicação realiza o cadastro de um usuário ........ falta .....
+A aplicação realiza o cadastro de um usuário.
 
 #### Obs: 
-........ falta .....
+...
 
 ## Tecnologia
 * Kotlin
