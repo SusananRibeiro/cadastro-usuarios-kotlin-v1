@@ -1,6 +1,6 @@
 package com.model
 
-class Cadastro {
+class Pessoa {
     var idUsuario: String? = null
     var nome: String? = null
     var cpf: String? = null

@@ -13,8 +13,8 @@ class JavaFxApplication : Application() {
         val urlFxml = javaClass.getResource("/main.fxml")
         carregarFxml.location = urlFxml
 
-        val root = carregarFxml.load<Parent>() // Carregando o layout definido no arquivo FXML
-        estagio.scene = Scene(root) // Criando uma cena com o layout e definindo-a no palco (stage)
+        val cena = Scene(carregarFxml.load()) // Carregando o layout definido no arquivo FXML
+        estagio.scene = cena// Criando uma cena com o layout e definindo-a no palco (stage)
         estagio.title = "Cadastro Usuário" // Configuração do título da janela
         estagio.show() // Exibição da janela
     }

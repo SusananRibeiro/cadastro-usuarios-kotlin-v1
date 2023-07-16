@@ -2,20 +2,17 @@ package com.controller
 import com.controller.repository.ConexaoDatabase
 import com.model.Usuario
 import javafx.fxml.FXML
-import javafx.fxml.FXMLLoader
-import javafx.scene.Scene
+import javafx.scene.control.Alert
 import javafx.scene.control.Label
 import javafx.scene.control.TextField
-import javafx.stage.Stage
-import java.sql.SQLException
-import java.sql.Statement
+
 class UsuarioController {
     @FXML
     private lateinit var nomeUsuario: TextField
     @FXML
     private lateinit var senha: TextField
     @FXML
-    private lateinit var mensagem: Label
+    private lateinit var mensagemUsuario: Label
     @FXML
     private lateinit var mensagemSenha: Label
 
@@ -26,69 +23,60 @@ class UsuarioController {
         user.senha = senha.text
         try {
             if (nomeUsuario.text.isEmpty()) {
-                mensagem.text = "É obrigatório informar o usuário!"
+                mensagemUsuario.text = "É obrigatório informar o usuário!"
+            } else if (!validarNomeDoUsuario(nomeUsuario.text.uppercase())) {
+                mensagemUsuario.text = "Usuário inválido."
             } else if (senha.text.isEmpty()) {
                 mensagemSenha.text = "É obrigatório informar a senha!"
-            } else if (buscarNomeUsuarioPorUsuario(user.nomeUsuario!!)) { // "!!" não nulo ou usar o "Elvis ?: nulo"
-                mensagem.text = "Usuário " + nomeUsuario.text + " já existe."
-
+            } else if (!validarSenhaDoUsuario(senha.text)) {
+                mensagemSenha.text = "Senha inválida."
             } else {
-                inserirUsuario(user)
+                val alert = Alert(Alert.AlertType.INFORMATION)
+                alert.title = "Sucesso!"
+                alert.headerText = "Login realizado com sucesso."
+                alert.show()
+                limparCamposUsuario()
                 limparMensagens()
-                abrirTelaDeCadastro()
-
             }
         } catch (e: NumberFormatException) {
             e.printStackTrace()
         }
         limparCamposUsuario()
-
     }
 
-    // Inserir (INSERT)
-    private fun inserirUsuario(usuario: Usuario) {
-        try {
-            val conn = conexao.conexaoDoDatabase
-            val sql = "INSERT INTO usuarios (usuario, senha) VALUES ( ?, ?)"
-            val pre = conn?.prepareStatement(sql)
-            pre?.setString(1, usuario.nomeUsuario)
-            pre?.setString(2, usuario.senha)
-            pre?.execute()
-            pre?.close()
-        } catch (e: SQLException) {
-            throw RuntimeException(e)
-        }
-    }
-
-    // Validar nome de usuário único
-    private fun buscarNomeUsuarioPorUsuario (usuario: String): Boolean {
+    // Validar usuário único
+    private fun validarNomeDoUsuario (usuario: String): Boolean {
         try {
             val selectSql = "SELECT id FROM usuarios WHERE usuario = '$usuario'" // precisa colocar entre aspas simples
-            val statement: Statement? = conexao.conexaoDoDatabase?.createStatement()
-            val resultSet = statement?.executeQuery(selectSql)
-            if (resultSet != null) {
-                return resultSet.next()
+            val statement = conexao.conexaoDoDatabase?.createStatement()
+            val resultado = statement?.executeQuery(selectSql)
+            if (resultado != null) {
+                return resultado.next()
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
         return false
     }
-    private fun abrirTelaDeCadastro() {
-        val carregarFxml = FXMLLoader()
-        carregarFxml.location = javaClass.getResource("/cadastro.fxml")
-        val cena = Scene(carregarFxml.load())
-        val estagio = Stage()
-        estagio.title = "Dados do Cadastro"
-        estagio.scene = cena
-        estagio.show()
+    private fun validarSenhaDoUsuario (senha: String): Boolean {
+        try {
+            val selectSql = "SELECT id FROM usuarios WHERE senha = '$senha'" // precisa colocar entre aspas simples
+            val statement = conexao.conexaoDoDatabase?.createStatement()
+            val resultado = statement?.executeQuery(selectSql)
+            if (resultado != null) {
+                return resultado.next()
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return false
     }
     private fun limparCamposUsuario() {
         nomeUsuario.text = "" // zera o campo
         senha.text = ""
     }
     private fun limparMensagens() {
-        mensagem.text = ""
+        mensagemUsuario.text = ""
         mensagemSenha.text = ""
     }
 
