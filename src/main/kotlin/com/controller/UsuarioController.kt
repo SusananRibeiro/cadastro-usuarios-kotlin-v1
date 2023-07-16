@@ -52,7 +52,7 @@ class UsuarioController {
                 alertaUsuario.headerText = "Login realizado com sucesso."
                 alertaUsuario.show()
                 limparCamposUsuario()
-                limparMensagens()
+                limparMensagensDoUsuario()
             }
         } catch (e: NumberFormatException) {
             e.printStackTrace()
@@ -80,13 +80,13 @@ class UsuarioController {
         nomeUsuario.text = "" // zera o campo
         senha.text = ""
     }
-    private fun limparMensagens() {
+    private fun limparMensagensDoUsuario() {
         mensagemUsuario.text = ""
         mensagemSenha.text = ""
     }
 
     // PESSOA =====================================================================================
-    fun executarBotaoSalvar() {
+    fun executarBotaoSalvarNoCadastro() {
         val pessoa = Pessoa()
         pessoa.idUsuario = idUsuario.text
         pessoa.nome = nome.text
@@ -103,24 +103,27 @@ class UsuarioController {
                 mensagemNome.text = "É obrigatório informar o nome!"
             } else if (cpf.text.isEmpty()) {
                 mensagemCpf.text = "É obrigatório informar o CPF!"
+            } else if (!cpf.text.matches(Regex("^[0-9]{11}$"))) {
+                mensagemCpf.text = "CPF informado está incorreto!"
             } else {
-                inserirCadastro(pessoa)
+                inserirCadastroDePessoa(pessoa)
                 val alertaPessoa = Alert(Alert.AlertType.INFORMATION)
                 alertaPessoa.title = "Sucesso!"
                 alertaPessoa.headerText = "Pessoa cadastrada com sucesso, código " + (cpf.text.substring(0, 4))
                 alertaPessoa.show()
                 limparMensagensPessoa()
-                limparCamposUsuarioPessoa()
+                limparCamposCadastroDePessoa()
             }
 
         } catch (e: NumberFormatException) {
             e.printStackTrace()
         }
-        limparCamposUsuarioPessoa()
+
+        limparCamposCadastroDePessoa()
 
     }
     // Inserir (INSERT)
-    private fun inserirCadastro(pessoa: Pessoa) {
+    private fun inserirCadastroDePessoa(pessoa: Pessoa) {
         try {
             val sql = "INSERT INTO cadastros (id_usuario, nome, cpf, endereco, telefone) " +
                     "VALUES ( ?, ?, ?, ?, ?)"
@@ -151,7 +154,7 @@ class UsuarioController {
         }
         return false
     }
-    private fun limparCamposUsuarioPessoa() {
+    private fun limparCamposCadastroDePessoa() {
         idUsuario.text = "" // zera o campo
         nome.text = ""
         cpf.text = ""
