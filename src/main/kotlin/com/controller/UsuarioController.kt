@@ -1,5 +1,5 @@
 package com.controller
-import com.controller.repository.ConexaoDatabase
+import com.repository.ConexaoDatabase
 import com.model.Pessoa
 import com.model.Usuario
 import javafx.fxml.FXML
