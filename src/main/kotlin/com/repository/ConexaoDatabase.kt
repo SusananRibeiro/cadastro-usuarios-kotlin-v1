@@ -1,6 +1,7 @@
-package com.controller.repository
+package com.repository
 import java.sql.Connection
 import java.sql.DriverManager
+
 class ConexaoDatabase {
 
     private val urlBanco: String = "jdbc:postgresql://localhost:5432/cadastro-usuarios"

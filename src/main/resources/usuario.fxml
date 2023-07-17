@@ -32,7 +32,7 @@
                   </AnchorPane>
                </content>
             </Tab>
-            <Tab text="Cadastra-se">
+            <Tab text="Cadastro">
                <content>
                   <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
@@ -52,16 +52,16 @@
                         </Label>
                         <Label layoutX="25.0" layoutY="178.0" text="CPF *" />
                         <TextField fx:id="cpf" layoutX="23.0" layoutY="194.0" prefHeight="25.0" prefWidth="248.0" />
+                        <Label layoutX="26.0" layoutY="244.0" text="Endereço" />
+                        <TextField fx:id="endereco" layoutX="23.0" layoutY="261.0" prefHeight="22.0" prefWidth="248.0" />
+                        <Label layoutX="28.0" layoutY="314.0" text="Telefone" />
+                        <TextField fx:id="telefone" layoutX="23.0" layoutY="330.0" />
+                        <Button fx:id="salvar" layoutX="121.0" layoutY="388.0" mnemonicParsing="false" onAction="#executarBotaoSalvar" text="Salvar" />
                         <Label fx:id="mensagemCpf" layoutX="24.0" layoutY="219.0" prefHeight="17.0" prefWidth="247.0" textFill="#e70808">
                            <font>
                               <Font size="8.0" />
                            </font>
                         </Label>
-                        <Label layoutX="26.0" layoutY="244.0" text="Endereço" />
-                        <TextField fx:id="endereco" layoutX="23.0" layoutY="261.0" prefHeight="22.0" prefWidth="248.0" />
-                        <Label layoutX="28.0" layoutY="314.0" text="Telefone" />
-                        <TextField fx:id="telefone" layoutX="23.0" layoutY="330.0" />
-                        <Button fx:id="salvar" layoutX="121.0" layoutY="392.0" mnemonicParsing="false" onAction="#executarBotaoSalvarNoCadastro" text="Salvar" />
                      </children>
                   </AnchorPane>
                </content>
