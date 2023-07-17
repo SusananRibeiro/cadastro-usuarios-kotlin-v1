@@ -3,9 +3,6 @@
 Este é um projeto que visa realizar a validação do usuário e senha 
 de um usuário, além de permitir o cadastro de uma nova pessoa.
 
-#### Obs: 
-
-
 ## Tecnologia
 * Kotlin
 * Java FX
